@@ -2,6 +2,8 @@ package com.fii.covidtracker.ui.article;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 import com.fii.covidtracker.R;
 import com.fii.covidtracker.network.ResourceStatus;
 import com.fii.covidtracker.repositories.models.articles.Article;
+import com.fii.covidtracker.ui.MainListItemAdapter;
 import com.fii.covidtracker.viewmodels.ViewModelProviderFactory;
 import com.fii.covidtracker.viewmodels.article.ArticleViewModel;
 
@@ -28,7 +31,8 @@ public class ArticleListActivity extends DaggerAppCompatActivity {
 
     private ArticleViewModel articleViewModel;
 
-    private List<Article> articles;
+    private RecyclerView articlesRecyclerView;
+    private MainListItemAdapter<Article> articleAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +42,16 @@ public class ArticleListActivity extends DaggerAppCompatActivity {
         articleViewModel = new ViewModelProvider(this, providerFactory)
                 .get(ArticleViewModel.class);
 
+        articlesRecyclerView = findViewById(R.id.list);
+        articlesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        articleAdapter = new MainListItemAdapter<>();
+        articlesRecyclerView.setAdapter(articleAdapter);
+
         subscribeToArticles(false);
     }
 
     private void subscribeToArticles(boolean forceFetch) {
+        articleViewModel.getArticlesResource(forceFetch).removeObservers(this);
         articleViewModel.getArticlesResource(forceFetch).observe(this, articlesResource -> {
             if (articlesResource != null) {
                 switch (articlesResource.getStatus()) {
@@ -71,8 +81,8 @@ public class ArticleListActivity extends DaggerAppCompatActivity {
     }
 
     private void processArticleList(List<Article> articles) {
-        this.articles = articles;
-        articles.forEach(article ->Log.i(TAG, "Received article: " + article.title));
+        articleAdapter.submitList(articles);
+        articleAdapter.notifyDataSetChanged();
     }
 
     private void processArticleList(ResourceStatus status) {

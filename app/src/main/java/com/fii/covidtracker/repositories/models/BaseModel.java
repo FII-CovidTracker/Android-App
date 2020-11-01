@@ -6,4 +6,8 @@ public abstract class BaseModel {
     public long createdAt;
 
     public long modifiedAt;
+
+    public int getId() {
+        return id;
+    }
 }
