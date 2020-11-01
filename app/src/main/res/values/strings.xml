@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Covid tracker</string>
+    <string name="caching_ttl">cachingTTL</string>
+</resources>

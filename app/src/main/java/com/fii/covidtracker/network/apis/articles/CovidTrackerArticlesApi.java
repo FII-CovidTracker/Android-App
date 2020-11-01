@@ -1,0 +1,23 @@
+package com.fii.covidtracker.network.apis.articles;
+
+import androidx.lifecycle.LiveData;
+
+import com.fii.covidtracker.network.apis.ApiResponse;
+import com.fii.covidtracker.network.responses.articles.ArticleResponse;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+
+public interface CovidTrackerArticlesApi {
+
+    @GET("articles/{articlesId}")
+    LiveData<ApiResponse<ArticleResponse>> getArticle(@Path("articlesId") int articlesId);
+
+    @GET("articles")
+    LiveData<ApiResponse<List<ArticleResponse>>> getArticles();
+
+}
