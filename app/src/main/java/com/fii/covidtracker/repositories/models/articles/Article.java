@@ -1,6 +1,5 @@
 package com.fii.covidtracker.repositories.models.articles;
 
-import com.fii.covidtracker.repositories.models.BaseModel;
 import com.fii.covidtracker.repositories.models.MainListItem;
 
 import java.text.DateFormat;
@@ -13,16 +12,16 @@ public class Article extends MainListItem {
     public int authorityId;
     public String author;
     public String title;
-    public String markdown_content;
+    public String markdownContent;
     public Date publishDate;
 
     public Article(int id, int authorityId, String author, String title,
-                   String markdown_content, Date publishDate, long createdAt, long modifiedAt) {
+                   String markdownContent, Date publishDate, long createdAt, long modifiedAt) {
         this.id = id;
         this.authorityId = authorityId;
         this.author = author;
         this.title = title;
-        this.markdown_content = markdown_content;
+        this.markdownContent = markdownContent;
         this.publishDate = publishDate;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;

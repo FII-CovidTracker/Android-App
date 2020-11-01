@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public class ArticleListActivity extends DaggerAppCompatActivity {
 
     private RecyclerView articlesRecyclerView;
     private MainListItemAdapter<Article> articleAdapter;
+    private List<Article> articles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,17 @@ public class ArticleListActivity extends DaggerAppCompatActivity {
         articlesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         articleAdapter = new MainListItemAdapter<>();
         articlesRecyclerView.setAdapter(articleAdapter);
+
+        articleAdapter.setOnClickListeners(position -> {
+            if (articles != null){
+                Intent intent = new Intent(ArticleListActivity.this, ArticleInfoActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("articleId", articles.get(position).getId());
+                intent.putExtras(b);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         subscribeToArticles(false);
     }
@@ -81,6 +94,7 @@ public class ArticleListActivity extends DaggerAppCompatActivity {
     }
 
     private void processArticleList(List<Article> articles) {
+        this.articles = articles;
         articleAdapter.submitList(articles);
         articleAdapter.notifyDataSetChanged();
     }

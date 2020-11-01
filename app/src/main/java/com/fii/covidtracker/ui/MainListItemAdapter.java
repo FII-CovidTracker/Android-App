@@ -10,13 +10,15 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.fii.covidtracker.R;
 import com.fii.covidtracker.repositories.models.MainListItem;
 
 import org.apache.commons.text.WordUtils;
 
 public class MainListItemAdapter<T extends MainListItem> extends ListAdapter<T, MainListItemAdapter.ViewHolder> {
+
+    private OnClickListeners onClickListeners;
+
     public MainListItemAdapter() {
         super(new DiffUtil.ItemCallback<T>() {
                     @Override
@@ -33,12 +35,16 @@ public class MainListItemAdapter<T extends MainListItem> extends ListAdapter<T, 
                 });
     }
 
+    public void setOnClickListeners(OnClickListeners onClickListeners) {
+        this.onClickListeners = onClickListeners;
+    }
+
     @NonNull
     @Override
     public MainListItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_list_item, parent, false);
 
-        return new MainListItemAdapter.ViewHolder(view);
+        return new MainListItemAdapter.ViewHolder(view, onClickListeners);
     }
 
     @Override
@@ -53,11 +59,12 @@ public class MainListItemAdapter<T extends MainListItem> extends ListAdapter<T, 
         private TextView leftSubtitle;
         private TextView rightSubtitle;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, OnClickListeners onClickListeners) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             leftSubtitle = itemView.findViewById(R.id.leftSubtitle);
             rightSubtitle = itemView.findViewById(R.id.rightSubtitle);
+            setupOnItemClickListener(itemView, onClickListeners);
         }
 
         void bindTo(MainListItem item) {
@@ -66,5 +73,21 @@ public class MainListItemAdapter<T extends MainListItem> extends ListAdapter<T, 
             rightSubtitle.setText(WordUtils.capitalizeFully(item.getRightSubtitle()));
         }
 
+        private void setupOnItemClickListener(@NonNull View itemView,
+                                              OnClickListeners onClickListeners) {
+            itemView.setOnClickListener(v -> {
+                if (onClickListeners != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        onClickListeners.onItemClick(position);
+                    }
+                }
+            });
+        }
+
+    }
+
+    public interface OnClickListeners {
+        void onItemClick(int position);
     }
 }

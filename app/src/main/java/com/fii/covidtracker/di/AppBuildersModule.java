@@ -4,6 +4,7 @@ import com.fii.covidtracker.di.article.ArticleBuildersModule;
 import com.fii.covidtracker.di.article.ArticleModule;
 import com.fii.covidtracker.di.article.ArticleScope;
 import com.fii.covidtracker.di.article.ArticleViewModelsModule;
+import com.fii.covidtracker.ui.article.ArticleInfoActivity;
 import com.fii.covidtracker.ui.article.ArticleListActivity;
 
 import dagger.Module;
@@ -20,4 +21,14 @@ abstract class AppBuildersModule {
             }
     )
     abstract ArticleListActivity contributeArticleListActivity();
+
+    @ArticleScope
+    @ContributesAndroidInjector(
+            modules = {ArticleBuildersModule.class,
+                    ArticleViewModelsModule.class,
+                    ArticleModule.class
+            }
+    )
+    abstract ArticleInfoActivity contributeArticleInfoActivity();
+
 }
