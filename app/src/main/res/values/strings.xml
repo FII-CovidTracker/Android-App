@@ -796,4 +796,5 @@ Infoline Coronavirus
     <!-- Accessibility Talk back information for android back button in toolbar -->
     <string name="android_accessibility_back_button">"Back"</string>
     <string name="caching_ttl">cachingTTL</string>
+    <string name="article_list_title">Articles</string>
 </resources>

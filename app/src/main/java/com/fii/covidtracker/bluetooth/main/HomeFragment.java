@@ -46,6 +46,7 @@ import com.fii.covidtracker.bluetooth.util.NotificatonErrorStateHelper;
 import com.fii.covidtracker.bluetooth.util.TracingErrorStateHelper;
 import com.fii.covidtracker.bluetooth.viewmodel.TracingViewModel;
 import com.fii.covidtracker.bluetooth.whattodo.WtdPositiveTestFragment;
+import com.fii.covidtracker.ui.article.ArticleListActivity;
 
 import org.dpppt.android.sdk.TracingStatus;
 
@@ -115,6 +116,7 @@ public class HomeFragment extends Fragment {
 		setupNotification();
 		setupWhatToDo();
 		setupDebugButton();
+		setupArticlesButton();
 		setupScrollBehavior();
 	}
 
@@ -323,6 +325,14 @@ public class HomeFragment extends Fragment {
 		} else {
 			debugButton.setVisibility(View.GONE);
 		}
+	}
+
+	private void setupArticlesButton() {
+		View articlesButton = getView().findViewById(R.id.main_button_articles);
+		articlesButton.setOnClickListener(v -> {
+			Intent intent = new Intent(getActivity(), ArticleListActivity.class);
+			startActivity(intent);
+		});
 	}
 
 	private void setupScrollBehavior() {
