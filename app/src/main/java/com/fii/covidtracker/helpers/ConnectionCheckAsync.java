@@ -23,8 +23,8 @@ public class ConnectionCheckAsync extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         try {
             Socket sock = new Socket();
-            sock.connect(new InetSocketAddress(Constants.COVID_TRACKER_SERVER_ADDR,
-                    Constants.COVID_TRACKER_SERVER_PORT), 1500);
+            sock.connect(new InetSocketAddress(Constants.COVID_TRACKER_PLACEHOLDER_API_URL,
+                    8080), 1500);
             sock.close();
             return true;
         } catch (IOException e) {
