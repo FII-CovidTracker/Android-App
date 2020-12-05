@@ -2,6 +2,18 @@ plugins {
     id 'com.android.application'
 }
 
+ext.readProperty = { paramName ->
+    if (project.hasProperty(paramName)) {
+        return project.getProperties().get(paramName)
+    } else {
+        Properties properties = new Properties()
+        if (project.rootProject.file('local.properties').exists()) {
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        }
+        return properties.getProperty(paramName)
+    }
+}
+
 android {
     compileSdkVersion 29
 
@@ -12,6 +24,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "long", "BUILD_TIME", System.currentTimeMillis() + "L"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -21,9 +35,27 @@ android {
         }
     }
 
+    flavorDimensions "version"
+    productFlavors {
+        dev {
+            buildConfigField 'boolean', 'IS_DEV', 'true'
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('testKeystore')
+            storePassword readProperty('keystorePassword')
+            keyAlias 'keyAlias'
+            keyPassword readProperty('keyAliasPassword')
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources true
+            setMinifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,6 +66,14 @@ android {
 }
 
 dependencies {
+
+    // DP3T prestandard bluetooth tracking
+    // Do not update over 0.2.6 !!!
+    implementation 'org.dpppt:dp3t-sdk-android:0.2.6'
+
+    // bluetooth tracked depedencies
+    implementation 'androidx.security:security-crypto:1.0.0-rc01'
+
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
