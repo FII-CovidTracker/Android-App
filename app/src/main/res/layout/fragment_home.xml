@@ -133,15 +133,6 @@
 					android:layout_marginBottom="@dimen/spacing_larger"
 					android:text="@string/debug_settings_title" />
 
-				<Button
-					android:id="@+id/main_button_articles"
-					style="@style/NextStep.Button.Outlined.Purple"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center_horizontal"
-					android:layout_marginBottom="@dimen/spacing_larger"
-					android:text="@string/article_list_title" />
-
 			</LinearLayout>
 
 		</ScrollView>
