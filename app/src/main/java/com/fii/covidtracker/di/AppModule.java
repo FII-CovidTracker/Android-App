@@ -9,6 +9,7 @@ import com.fii.covidtracker.helpers.Constants;
 import com.fii.covidtracker.local_db.CovidTrackerDatabase;
 import com.fii.covidtracker.network.apis.LiveDataCallAdapter;
 import com.fii.covidtracker.network.apis.articles.CovidTrackerArticlesApi;
+import com.fii.covidtracker.network.apis.regions.CovidTrackerRegionsApi;
 
 import javax.inject.Singleton;
 
@@ -23,7 +24,7 @@ class AppModule {
     @Provides
     static Retrofit provideRetrofitInstance() {
         return new Retrofit.Builder()
-                .baseUrl(Constants.COVID_TRACKER_PLACEHOLDER_API_URL)
+                .baseUrl(Constants.COVID_TRACKER_API_URL)
                 .addCallAdapterFactory(LiveDataCallAdapter.Factory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -50,5 +51,11 @@ class AppModule {
     @Provides
     static CovidTrackerArticlesApi provideCovidTrackerArticlesApi(Retrofit retrofit) {
         return retrofit.create(CovidTrackerArticlesApi.class);
+    }
+
+    @Singleton
+    @Provides
+    static CovidTrackerRegionsApi provideCovidTrackerRegionsApi(Retrofit retrofit) {
+        return retrofit.create(CovidTrackerRegionsApi.class);
     }
 }

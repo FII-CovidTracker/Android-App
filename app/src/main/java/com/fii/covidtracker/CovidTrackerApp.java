@@ -81,8 +81,8 @@ public class CovidTrackerApp extends DaggerApplication {
                 "TUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFa0VBdlc5REtQb25TVXJXMzMvZUQvNUFmZHM1R20xTTY1NDhwTkxmNXZpamVib0VkNUhVOGNBMTBiK0tuZ3c0TGJ1a0hqUXFadW9YUFdQNVAvQ0lQNmc9PQ==");
         DP3T.init(context, new ApplicationInfo(
                         "demo.dpppt.org",
-                        "https://tracking-dot-fii-covidtracker.ey.r.appspot.com",
-                        "https://tracking-dot-fii-covidtracker.ey.r.appspot.com"),
+                        Constants.COVID_TRACKER_TRACKING_ENDPOINT,
+                        Constants.COVID_TRACKER_TRACKING_ENDPOINT),
                 publicKey);
 
         CertificatePinner certificatePinner = new CertificatePinner.Builder()

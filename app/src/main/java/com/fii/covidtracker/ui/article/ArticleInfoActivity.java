@@ -92,7 +92,9 @@ public class ArticleInfoActivity extends DaggerAppCompatActivity {
         this.article = article;
         this.title.setText(article.title);
         Log.i(TAG, "markdownContent: " + article.markdownContent);
-        markwon.setMarkdown(this.markdownContent, article.markdownContent);
+        if(article.markdownContent != null) {
+            markwon.setMarkdown(this.markdownContent, article.markdownContent);
+        }
     }
 
     private void processArticle(ResourceStatus status) {

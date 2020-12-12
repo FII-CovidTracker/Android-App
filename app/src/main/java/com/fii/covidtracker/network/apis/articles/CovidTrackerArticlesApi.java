@@ -14,10 +14,10 @@ import retrofit2.http.Query;
 
 public interface CovidTrackerArticlesApi {
 
-    @GET("articles/{articlesId}")
+    @GET("article/{articlesId}")
     LiveData<ApiResponse<ArticleResponse>> getArticle(@Path("articlesId") int articlesId);
 
-    @GET("articles")
+    @GET("article")
     LiveData<ApiResponse<List<ArticleResponse>>> getArticles();
 
 }

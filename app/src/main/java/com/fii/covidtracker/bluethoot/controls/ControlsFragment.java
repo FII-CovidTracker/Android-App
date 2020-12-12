@@ -16,30 +16,37 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.fii.covidtracker.CovidTrackerApp;
 import com.fii.covidtracker.R;
 import com.fii.covidtracker.bluethoot.util.DialogUtil;
 import com.fii.covidtracker.bluethoot.util.RequirementsUtil;
+import com.fii.covidtracker.network.ResourceStatus;
+import com.fii.covidtracker.repositories.models.regions.Region;
+import com.fii.covidtracker.viewmodels.ViewModelProviderFactory;
+import com.fii.covidtracker.viewmodels.region.RegionViewModel;
 
 import org.dpppt.android.sdk.DP3T;
 import org.dpppt.android.sdk.InfectionStatus;
@@ -51,13 +58,25 @@ import org.dpppt.android.sdk.internal.database.Database;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
-public class ControlsFragment extends Fragment {
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerFragment;
+
+public class ControlsFragment extends DaggerFragment implements AdapterView.OnItemSelectedListener {
 
 	private static final String TAG = ControlsFragment.class.getCanonicalName();
 
+	@Inject
+	ViewModelProviderFactory providerFactory;
+
+	private RegionViewModel regionViewModel;
+	private List<Region> regions;
+
+	private SharedPreferences prefs;
 	private static final int REQUEST_CODE_PERMISSION_LOCATION = 1;
 	private static final int REQUEST_CODE_REPORT_EXPOSED = 2;
 
@@ -88,6 +107,14 @@ public class ControlsFragment extends Fragment {
 		return new ControlsFragment();
 	}
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		regionViewModel = new ViewModelProvider((ViewModelStoreOwner) this, providerFactory)
+				.get(RegionViewModel.class);
+	}
+
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -99,6 +126,69 @@ public class ControlsFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		setupUi(view);
+
+		prefs = getActivity().getSharedPreferences(
+				"com.fii.covidtracker.app", Context.MODE_PRIVATE);
+
+		subscribeToRegions(false);
+	}
+
+	private void subscribeToRegions(boolean forceFetch) {
+		regionViewModel.getRegionsResource(forceFetch).removeObservers((LifecycleOwner) getActivity());
+		regionViewModel.getRegionsResource(forceFetch).observe((LifecycleOwner) getActivity(), regionsResource -> {
+			if (regionsResource != null) {
+				switch (regionsResource.getStatus()) {
+					case LOADING:
+						if (regionsResource.getData() != null) {
+							processRegionList(regionsResource.getData());
+						} else {
+							processRegionList(ResourceStatus.LOADING);
+						}
+						break;
+					case SUCCESS:
+						if (regionsResource.getData() != null) {
+							processRegionList(regionsResource.getData());
+						} else {
+							processRegionList(ResourceStatus.EMPTY);
+						}
+						break;
+					case ERROR:
+						Toast.makeText(getContext(), "Can't connect to our server!", Toast.LENGTH_SHORT).show();
+						if (regionsResource.getData() == null) {
+							processRegionList(ResourceStatus.ERROR);
+						}
+						break;
+				}
+			}
+		});
+	}
+
+	private void processRegionList(List<Region> regions) {
+		this.regions = regions;
+		Spinner spinner = (Spinner) getActivity().findViewById(R.id.home_region_spinner);
+
+		ArrayAdapter<Region> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, this.regions);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
+		int regionId = prefs.getInt("regionId", 0);
+		Log.d(TAG, "processRegionList: " + regionId);
+		Optional<Region> region = regions.stream()
+				.filter(r -> r.id == regionId)
+				.findFirst();
+		Log.d(TAG, "processRegionList: " + region);
+		if(region.isPresent()){
+			Log.d(TAG, "processRegionList: " + regions.indexOf(region.get()));
+			spinner.setSelection(regions.indexOf(region.get()));
+		}
+		else{
+			spinner.setSelection(0);
+		}
+		spinner.setOnItemSelectedListener(this);
+	}
+
+	private void processRegionList(ResourceStatus status) {
+		//TODO: show this better
+		Toast.makeText(getContext(), status.toString(), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -319,5 +409,16 @@ public class ControlsFragment extends Fragment {
 			view.findViewById(R.id.home_loading_view_exposed).setVisibility(visible ? View.VISIBLE : View.GONE);
 			view.findViewById(R.id.home_button_report_infected).setVisibility(visible ? View.INVISIBLE : View.VISIBLE);
 		}
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		prefs.edit().putInt("regionId", regions.get(position).id).apply();
+		Log.d(TAG, "onItemSelected: " + regions.get(position).id);
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+
 	}
 }

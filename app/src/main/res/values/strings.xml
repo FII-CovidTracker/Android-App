@@ -63,4 +63,6 @@
     <string name="version_info">SDK Version Info</string>
     <string name="debugging_options">Debugging options</string>
     <string name="necessary_permissions">Necessary permissions</string>
+    <string name="settings">Settings</string>
+    <string name="your_region">Your Region:</string>
 </resources>
