@@ -39,6 +39,9 @@ public class Article extends MainListItem {
 
     @Override
     public String getRightSubtitle() {
+        if(publishDate == null) {
+            return "n/a";
+        }
         String pattern = "MM/dd/yyyy HH:mm:ss";
 
         DateFormat df = new SimpleDateFormat(pattern, Locale.ROOT);

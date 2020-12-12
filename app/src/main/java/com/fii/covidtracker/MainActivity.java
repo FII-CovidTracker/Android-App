@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.main_fragment_container, ControlsFragment.newInstance())
+					.add(R.id.main_fragment_container, new ControlsFragment().newInstance())
 					.commit();
 		}
 	}
