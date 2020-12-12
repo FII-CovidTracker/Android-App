@@ -27,9 +27,9 @@
     <string name="status_tracking_inactive">STOPPED</string>
     <string name="status_advertising">advertising: %1$b</string>
     <string name="status_receiving">receiving: %1$b</string>
-    <string name="status_last_synced">last synced: %1$s</string>
-    <string name="status_number_handshakes">handshakes: %1$d</string>
-    <string name="status_number_contacts">contacts: %1$d</string>
+    <string name="status_last_synced">Last synced: %1$s</string>
+    <string name="status_number_handshakes">Number of messages exchanged with other devices: %1$d</string>
+    <string name="status_number_contacts">Number of encountered devices: %1$d</string>
     <string name="status_been_exposed">has been exposed: %1$b</string>
     <string name="status_self_infected">self infected: %1$b</string>
     <string name="dialog_clear_data_title">Clear local data</string>
@@ -61,4 +61,6 @@
     <string name="parameter_scan_mode">Scan Mode</string>
     <string name="parameter_use_scan_response">Use scan response (active scanning)</string>
     <string name="version_info">SDK Version Info</string>
+    <string name="debugging_options">Debugging options</string>
+    <string name="necessary_permissions">Necessary permissions</string>
 </resources>

@@ -53,7 +53,7 @@ public class DatePickerFragmentDialog extends DialogFragment implements DatePick
 		int selectedDay = c.get(Calendar.DAY_OF_MONTH);
 		int selectedMonth = c.get(Calendar.MONTH);
 		int selectedYear = c.get(Calendar.YEAR);
-		DatePickerDialog dialog = new DatePickerDialog(getActivity(), R.style.DialogTheme,
+		DatePickerDialog dialog = new DatePickerDialog(getActivity(),
 				this, selectedYear, selectedMonth, selectedDay);
 
 		dialog.getDatePicker().setMinDate(getArguments().getLong(ARG_MIN_DATE, c.getTimeInMillis()));

@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fii.covidtracker.bluethoot.controls.ControlsFragment;
 import com.fii.covidtracker.ui.article.ArticleListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +42,15 @@ public class MainActivity extends AppCompatActivity {
 	private void setupNavigationView() {
 		BottomNavigationView navigationView = findViewById(R.id.main_navigation_view);
 		navigationView.inflateMenu(R.menu.menu_navigation_main);
+
+
+		float radius = 64.0f;
+		MaterialShapeDrawable bottomNavigationViewBackground = (MaterialShapeDrawable) navigationView.getBackground();
+		bottomNavigationViewBackground.setShapeAppearanceModel(
+				bottomNavigationViewBackground.getShapeAppearanceModel().toBuilder()
+						.setTopRightCorner(CornerFamily.ROUNDED, radius)
+						.setTopLeftCorner(CornerFamily.ROUNDED, radius)
+						.build());
 
 		navigationView.setOnNavigationItemSelectedListener(item -> {
 			switch (item.getItemId()) {

@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
 
+        <item name="android:statusBarColor">@color/color_secondary_light_transparent</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowActionBarOverlay">true</item>
@@ -12,6 +14,12 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="NoActionBarThemeWhiteStatus" parent="NoActionBarTheme">>
+
+        <item name="android:statusBarColor">@color/white</item>
+
     </style>
 
     <style name="Sample.Text" parent="TextAppearance.AppCompat">
@@ -50,7 +58,7 @@
 
     <style name="Sample.Button.Tracking">
         <item name="backgroundTint">@color/selector_tracking_button_color</item>
-        <item name="strokeColor">@color/red</item>
+        <item name="strokeColor">@color/green</item>
         <item name="strokeWidth">@dimen/button_outline_stroke</item>
         <item name="android:textColor">@color/selector_tracking_text_color</item>
     </style>
@@ -59,9 +67,5 @@
         <item name="background">@color/white</item>
         <item name="itemIconTint">@color/selector_bottom_navigation_item_color</item>
         <item name="itemTextColor">@color/selector_bottom_navigation_item_color</item>
-    </style>
-
-    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/color_secondary</item>
     </style>
 </resources>
