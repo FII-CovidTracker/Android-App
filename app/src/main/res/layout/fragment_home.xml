@@ -60,7 +60,7 @@
 					android:fontFamily="@font/roboto_medium"
 					android:gravity="center_vertical"
 					android:textSize="22sp"
-					android:text="@string/debugging_options"
+					android:text="@string/necessary_permissions"
 					app:layout_constraintBottom_toBottomOf="@id/permissions_circle"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toEndOf="@id/permissions_circle"
