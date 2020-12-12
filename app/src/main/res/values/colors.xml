@@ -6,6 +6,7 @@
     <color name="color_secondary">#3392a3</color>
     <color name="color_secondary_dark">#006474</color>
     <color name="color_secondary_light">#6ac3d4</color>
+    <color name="color_secondary_light_transparent">#806ac3d4</color>
     <color name="color_white">#ffffff</color>
     <color name="color_white_transparent">#80ffffff</color>
     <color name="color_translucent">#60222222</color>

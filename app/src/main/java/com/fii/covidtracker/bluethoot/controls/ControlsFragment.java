@@ -16,16 +16,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +46,6 @@ import org.dpppt.android.sdk.InfectionStatus;
 import org.dpppt.android.sdk.TracingStatus;
 import org.dpppt.android.sdk.backend.ResponseCallback;
 import org.dpppt.android.sdk.backend.models.ExposeeAuthMethodJson;
-import org.dpppt.android.sdk.internal.AppConfigManager;
 import org.dpppt.android.sdk.internal.database.Database;
 
 import java.text.DateFormat;
@@ -213,8 +209,7 @@ public class ControlsFragment extends Fragment {
 
 		TracingStatus status = DP3T.getStatus(context);
 
-		TextView statusText = view.findViewById(R.id.home_status_text);
-		statusText.setText(formatStatusString(status));
+		formatStatusString(status);
 
 		Button buttonStartStopTracking = view.findViewById(R.id.home_button_start_stop_tracking);
 		boolean isRunning = status.isAdvertising() || status.isReceiving();
@@ -244,37 +239,56 @@ public class ControlsFragment extends Fragment {
 				});
 	}
 
-	private SpannableString formatStatusString(TracingStatus status) {
-		SpannableStringBuilder builder = new SpannableStringBuilder();
+	private void formatStatusString(TracingStatus status) {
+
 		boolean isTracking = status.isAdvertising() || status.isReceiving();
-		builder.append(getString(isTracking ? R.string.status_tracking_active : R.string.status_tracking_inactive)).append("\n")
-				.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-		builder.append(getString(R.string.status_advertising, status.isAdvertising())).append("\n")
-				.append(getString(R.string.status_receiving, status.isReceiving())).append("\n");
+		TextView trackingStatusTW = getActivity().findViewById(R.id.home_tracking_status);
+		if(trackingStatusTW != null) {
+			trackingStatusTW.setText(getString(isTracking ?
+					R.string.status_tracking_active : R.string.status_tracking_inactive));
+			if(isTracking) {
+				trackingStatusTW.setTextColor(getResources().getColor(R.color.green));
+			}
+			else {
+				trackingStatusTW.setTextColor(getResources().getColor(R.color.red));
+			}
+		}
 
 		long lastSyncDateUTC = status.getLastSyncDate();
 		String lastSyncDateString =
 				lastSyncDateUTC > 0 ? DATE_FORMAT_SYNC.format(new Date(lastSyncDateUTC)) : "n/a";
-		builder.append(getString(R.string.status_last_synced, lastSyncDateString)).append("\n")
-				.append(getString(R.string.status_self_infected, status.getInfectionStatus() == InfectionStatus.INFECTED))
-				.append("\n")
-				.append(getString(R.string.status_been_exposed, status.getInfectionStatus() == InfectionStatus.EXPOSED))
-				.append("\n")
-				.append(getString(R.string.status_number_contacts, status.getNumberOfContacts())).append("\n")
-				.append(getString(R.string.status_number_handshakes, new Database(getContext()).getHandshakes().size()));
-
-		Collection<TracingStatus.ErrorState> errors = status.getErrors();
-		if (errors != null && errors.size() > 0) {
-			int start = builder.length();
-			builder.append("\n");
-			for (TracingStatus.ErrorState error : errors) {
-				builder.append("\n").append(error.toString());
-			}
-			builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.red, null)),
-					start, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		TextView syncDateTW = getActivity().findViewById(R.id.home_sync_date);
+		if (syncDateTW != null) {
+			syncDateTW.setText(getString(R.string.status_last_synced, lastSyncDateString));
 		}
 
-		return new SpannableString(builder);
+		boolean isInfected = status.getInfectionStatus() == InfectionStatus.INFECTED;
+		boolean hasBeenExposed = status.getInfectionStatus() == InfectionStatus.EXPOSED;
+
+		TextView infectedStatusTW = getActivity().findViewById(R.id.home_infected_status);
+		if(infectedStatusTW != null) {
+			if (isInfected) {
+				infectedStatusTW.setVisibility(View.VISIBLE);
+				infectedStatusTW.setText("INFECTED");
+			} else {
+				if (hasBeenExposed) {
+					infectedStatusTW.setVisibility(View.VISIBLE);
+					infectedStatusTW.setText("EXPOSED");
+				} else {
+					infectedStatusTW.setVisibility(View.GONE);
+				}
+			}
+		}
+		TextView contactsTW = getActivity().findViewById(R.id.home_contacts);
+		if (contactsTW != null) {
+			contactsTW.setText(getString(R.string.status_number_contacts, status.getNumberOfContacts()));
+		}
+
+		TextView handshakesTW = getActivity().findViewById(R.id.home_handshakes);
+		if (handshakesTW != null) {
+			handshakesTW.setText(getString(R.string.status_number_handshakes,
+					new Database(getContext()).getHandshakes().size()));
+		}
 	}
 
 	private void sendInfectedUpdate(Context context, Date onsetDate, String codeInputBase64) {

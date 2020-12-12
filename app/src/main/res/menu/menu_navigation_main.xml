@@ -13,7 +13,7 @@
 	<item
 		android:id="@+id/action_bluetooth_controls"
 		android:enabled="true"
-		android:icon="@drawable/ic_controls"
+		android:icon="@drawable/ic_bluetooth"
 		android:title="@string/tab_bluetooth_controls" />
 	<item
 		android:id="@+id/action_articles"

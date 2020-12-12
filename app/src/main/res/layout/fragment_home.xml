@@ -24,119 +24,337 @@
 		android:paddingTop="@dimen/spacing_large"
 		android:paddingBottom="@dimen/spacing_large">
 
-		<Button
-			android:id="@+id/home_button_location"
-			style="@style/Sample.Button.Requirements"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_medium"
-			tools:text="@string/req_location_permission_ungranted" />
 
-		<Button
-			android:id="@+id/home_button_battery_optimization"
-			style="@style/Sample.Button.Requirements"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_medium"
-			tools:text="@string/req_battery_active" />
-
-		<Button
-			android:id="@+id/home_button_bluetooth"
-			style="@style/Sample.Button.Requirements"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_large"
-			tools:text="@string/req_bluetooth_inactive" />
-
-		<TextView
-			android:id="@+id/home_status_text"
-			style="@style/Sample.Text"
+		<com.google.android.material.card.MaterialCardView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_huge"
-			android:background="@color/greyLight"
-			android:gravity="center"
-			android:padding="@dimen/spacing_large"
-			tools:text="This textview displays the status of the STAR SDK on one or multiple lines." />
+			android:layout_marginStart="16dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginEnd="16dp"
+			android:layout_marginBottom="8dp"
+			android:elevation="4dp"
+			app:cardElevation="4dp"
+			app:cardCornerRadius="16dp">
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
 
-		<Button
-			android:id="@+id/home_button_start_stop_tracking"
-			style="@style/Sample.Button.Tracking"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/button_tracking_start" />
+				<View
+					android:id="@+id/permissions_circle"
+					android:layout_width="42dp"
+					android:layout_height="42dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/ic_check_circle"
+					android:backgroundTint="@color/color_primary"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent" />
 
-		<LinearLayout
+				<TextView
+					android:id="@+id/permissions_title"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="8dp"
+					android:layout_marginEnd="8dp"
+					android:fontFamily="@font/roboto_medium"
+					android:gravity="center_vertical"
+					android:textSize="22sp"
+					android:text="@string/debugging_options"
+					app:layout_constraintBottom_toBottomOf="@id/permissions_circle"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toEndOf="@id/permissions_circle"
+					app:layout_constraintTop_toTopOf="parent" />
+
+				<LinearLayout
+					android:id="@+id/permissions_horiz_buttons"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:weightSum="1.0"
+					app:layout_constraintTop_toBottomOf="@+id/permissions_circle"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent">
+						<Button
+							android:id="@+id/home_button_location"
+							style="@style/Sample.Button.Requirements"
+							android:layout_weight=".5"
+							android:layout_width="0dip"
+							android:layout_height="match_parent"
+							android:layout_margin="8dp"
+							android:layout_marginEnd="4dp"
+							tools:text="@string/req_location_permission_ungranted" />
+
+						<Button
+							android:id="@+id/home_button_bluetooth"
+							style="@style/Sample.Button.Requirements"
+							android:layout_weight=".5"
+							android:layout_width="0dip"
+							android:layout_height="match_parent"
+							android:layout_margin="8dp"
+							android:layout_marginStart="4dp"
+							tools:text="@string/req_bluetooth_inactive" />
+				</LinearLayout>
+
+				<Button
+					android:id="@+id/home_button_battery_optimization"
+					style="@style/Sample.Button.Requirements"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_margin="8dp"
+					android:layout_marginBottom="@dimen/spacing_medium"
+					tools:text="@string/req_battery_active"
+					app:layout_constraintTop_toBottomOf="@+id/permissions_horiz_buttons"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintBottom_toBottomOf="parent"
+					/>
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
+		</com.google.android.material.card.MaterialCardView>
+
+		<com.google.android.material.card.MaterialCardView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginStart="@dimen/spacing_large"
-			android:layout_marginEnd="@dimen/spacing_large"
-			android:layout_marginBottom="@dimen/spacing_large"
-			android:gravity="center_horizontal"
-			android:orientation="horizontal"/>
+			android:layout_marginStart="16dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginEnd="16dp"
+			android:layout_marginBottom="8dp"
+			android:elevation="4dp"
+			app:cardElevation="4dp"
+			app:cardCornerRadius="16dp">
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
 
-		<Button
-			android:id="@+id/home_button_sync"
-			style="@style/Sample.Button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="@dimen/spacing_large"
-			android:text="@string/button_sync"
-			app:backgroundTint="@color/blue"
-			app:icon="@drawable/ic_refresh" />
+				<View
+					android:id="@+id/tracking_circle"
+					android:layout_width="42dp"
+					android:layout_height="42dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/ic_handshakes"
+					android:backgroundTint="@color/color_primary"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent" />
 
-		<Button
-			android:id="@+id/home_button_clear_data"
-			style="@style/Sample.Button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/button_clear_data" />
+				<TextView
+					android:id="@+id/tracking_title"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="8dp"
+					android:layout_marginEnd="8dp"
+					android:fontFamily="@font/roboto_medium"
+					android:gravity="center_vertical"
+					android:textSize="22sp"
+					android:text="Tracking"
+					app:layout_constraintBottom_toBottomOf="@id/tracking_circle"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toEndOf="@id/tracking_circle"
+					app:layout_constraintTop_toTopOf="parent" />
 
-		<LinearLayout
+				<TextView
+					android:id="@+id/home_tracking_status"
+					style="@style/Sample.Text"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="@dimen/spacing_huge"
+					android:padding="@dimen/spacing_large"
+					app:layout_constraintTop_toBottomOf="@+id/tracking_circle"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					android:textFontWeight="700"
+					android:textAllCaps="true"
+					android:gravity="center"
+					tools:text="Current Status" />
+
+				<TextView
+					android:id="@+id/home_infected_status"
+					style="@style/Sample.Text"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="@dimen/spacing_huge"
+					android:padding="@dimen/spacing_large"
+					app:layout_constraintTop_toBottomOf="@+id/home_tracking_status"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					android:textColor="@color/red"
+					android:textFontWeight="700"
+					android:textAllCaps="true"
+					android:gravity="center"
+					tools:text="Infected Status" />
+
+				<LinearLayout
+					android:id="@+id/contacts_and_handshakes"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:weightSum="1.0"
+					app:layout_constraintTop_toBottomOf="@+id/home_infected_status"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent">
+
+					<TextView
+						android:id="@+id/home_contacts"
+						style="@style/Sample.Text"
+						android:layout_weight=".5"
+						android:layout_width="0dip"
+						android:layout_height="match_parent"
+						android:layout_margin="8dp"
+						android:layout_marginStart="8dp"
+						android:gravity="center"
+						android:padding="@dimen/spacing_large"
+						app:layout_constraintBottom_toBottomOf="@+id/home_handshakes"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toBottomOf="@+id/home_infected_status"
+						tools:text="number of contacts" />
+
+					<TextView
+						android:id="@+id/home_handshakes"
+						style="@style/Sample.Text"
+						android:layout_weight=".5"
+						android:layout_width="0dip"
+						android:layout_height="match_parent"
+						android:layout_margin="8dp"
+						android:layout_marginStart="8dp"
+						android:layout_marginBottom="@dimen/spacing_huge"
+						android:padding="@dimen/spacing_large"
+						app:layout_constraintTop_toBottomOf="@+id/home_infected_status"
+						app:layout_constraintStart_toEndOf="@+id/home_contacts"
+						app:layout_constraintEnd_toEndOf="parent"
+						android:gravity="center"
+						tools:text="number of handshakes" />
+
+				</LinearLayout>
+
+				<TextView
+					android:id="@+id/home_sync_date"
+					style="@style/Sample.Text"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="@dimen/spacing_huge"
+					android:padding="@dimen/spacing_large"
+					app:layout_constraintTop_toBottomOf="@+id/contacts_and_handshakes"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					android:gravity="center"
+					tools:text="sync date" />
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:weightSum="1.0"
+					app:layout_constraintTop_toBottomOf="@+id/home_sync_date"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintBottom_toBottomOf="parent">
+					<Button
+						android:id="@+id/home_button_start_stop_tracking"
+						style="@style/Sample.Button.Tracking"
+						android:layout_weight=".5"
+						android:layout_width="0dip"
+						android:layout_height="match_parent"
+						android:layout_margin="8dp"
+						android:layout_marginStart="8dp"
+						android:text="@string/button_tracking_start" />
+
+					<Button
+						android:id="@+id/home_button_report_infected"
+						style="@style/Sample.Button"
+						android:layout_weight=".5"
+						android:layout_width="0dip"
+						android:layout_height="match_parent"
+						android:layout_margin="8dp"
+						android:layout_marginStart="8dp"
+						android:backgroundTint="@color/red"
+						android:text="@string/button_report_infected" />
+				</LinearLayout>
+			</androidx.constraintlayout.widget.ConstraintLayout>
+		</com.google.android.material.card.MaterialCardView>
+
+
+
+		<com.google.android.material.card.MaterialCardView
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:layout_marginStart="16dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginEnd="16dp"
+			android:layout_marginBottom="8dp"
+			android:elevation="4dp"
+			app:cardElevation="4dp"
+			app:cardCornerRadius="16dp">
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
 
-			<FrameLayout
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_margin="@dimen/spacing_large"
-				android:layout_weight="1">
+				<View
+					android:id="@+id/debug_circle"
+					android:layout_width="42dp"
+					android:layout_height="42dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/ic_controls"
+					android:backgroundTint="@color/color_primary"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent" />
 
-				<ProgressBar
-					android:id="@+id/home_loading_view_export_db"
-					android:layout_width="@dimen/loading_size_small"
-					android:layout_height="@dimen/loading_size_small"
-					android:layout_gravity="center"
-					android:visibility="gone" />
+				<TextView
+					android:id="@+id/debug_title"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="8dp"
+					android:layout_marginEnd="8dp"
+					android:fontFamily="@font/roboto_medium"
+					android:gravity="center_vertical"
+					android:textSize="22sp"
+					android:text="@string/debugging_options"
+					app:layout_constraintBottom_toBottomOf="@id/debug_circle"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toEndOf="@id/debug_circle"
+					app:layout_constraintTop_toTopOf="parent" />
 
-			</FrameLayout>
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:weightSum="1.0"
+					app:layout_constraintTop_toBottomOf="@+id/debug_circle"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintBottom_toBottomOf="parent">
+					<Button
+						android:id="@+id/home_button_sync"
+						style="@style/Sample.Button.Requirements"
+						android:layout_weight=".5"
+						android:layout_width="0dip"
+						android:layout_height="match_parent"
+						android:layout_margin="8dp"
+						android:layout_marginStart="8dp"
+						android:layout_marginBottom="@dimen/spacing_large"
+						android:text="@string/button_sync"
+						app:icon="@drawable/ic_refresh" />
 
-			<FrameLayout
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_margin="@dimen/spacing_large"
-				android:layout_weight="1">
-
-				<ProgressBar
-					android:id="@+id/home_loading_view_upload_db"
-					android:layout_width="@dimen/loading_size_small"
-					android:layout_height="@dimen/loading_size_small"
-					android:layout_gravity="center"
-					android:visibility="gone" />
-
-			</FrameLayout>
-		</LinearLayout>
+					<Button
+						android:id="@+id/home_button_clear_data"
+						style="@style/Sample.Button.Requirements"
+						android:layout_weight=".5"
+						android:layout_width="0dip"
+						android:layout_height="match_parent"
+						android:layout_margin="8dp"
+						android:layout_marginStart="8dp"
+						app:icon="@drawable/ic_refresh"
+						android:text="@string/button_clear_data" />
+				</LinearLayout>
+			</androidx.constraintlayout.widget.ConstraintLayout>
+		</com.google.android.material.card.MaterialCardView>
 
 		<FrameLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
-
-			<Button
-				android:id="@+id/home_button_report_infected"
-				style="@style/Sample.Button"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/button_report_infected" />
 
 			<ProgressBar
 				android:id="@+id/home_loading_view_exposed"
