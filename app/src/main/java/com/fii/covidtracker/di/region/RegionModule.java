@@ -1,7 +1,6 @@
 package com.fii.covidtracker.di.region;
 
 import com.fii.covidtracker.AppExecutors;
-import com.fii.covidtracker.di.article.ArticleScope;
 import com.fii.covidtracker.local_db.CovidTrackerDatabase;
 import com.fii.covidtracker.local_db.dao.articles.ArticleDao;
 import com.fii.covidtracker.local_db.dao.regions.RegionDao;
@@ -9,6 +8,8 @@ import com.fii.covidtracker.network.apis.articles.CovidTrackerArticlesApi;
 import com.fii.covidtracker.network.apis.regions.CovidTrackerRegionsApi;
 import com.fii.covidtracker.repositories.articles.ArticleRepository;
 import com.fii.covidtracker.repositories.regions.RegionRepository;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;

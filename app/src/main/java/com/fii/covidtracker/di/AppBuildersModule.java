@@ -10,9 +10,12 @@ import com.fii.covidtracker.di.region.RegionBuildersModule;
 import com.fii.covidtracker.di.region.RegionModule;
 import com.fii.covidtracker.di.region.RegionScope;
 import com.fii.covidtracker.di.region.RegionViewModelsModule;
+import com.fii.covidtracker.repositories.models.articles.Article;
 import com.fii.covidtracker.repositories.models.regions.Region;
 import com.fii.covidtracker.ui.article.ArticleInfoActivity;
 import com.fii.covidtracker.ui.article.ArticleListFragment;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -39,10 +42,14 @@ abstract class AppBuildersModule {
     abstract ArticleInfoActivity contributeArticleInfoActivity();
 
     @RegionScope
+    @ArticleScope
     @ContributesAndroidInjector(
             modules = {RegionBuildersModule.class,
                     RegionViewModelsModule.class,
-                    RegionModule.class
+                    RegionModule.class,
+                    ArticleBuildersModule.class,
+                    ArticleViewModelsModule.class,
+                    ArticleModule.class
             }
     )
     abstract ControlsFragment contributeControlsFragment();
