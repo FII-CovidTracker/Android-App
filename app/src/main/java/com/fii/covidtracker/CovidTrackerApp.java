@@ -33,7 +33,10 @@ public class CovidTrackerApp extends DaggerApplication {
     public void onCreate() {
         super.onCreate();
         lookupPreferences();
+        startDP3T();
+    }
 
+    private void startDP3T() {
         if (ProcessUtil.isMainProcess(this)) {
             registerReceiver(sdkReceiver, DP3T.getUpdateIntentFilter());
             initDP3T(this);
@@ -77,16 +80,15 @@ public class CovidTrackerApp extends DaggerApplication {
     }
 
     public static void initDP3T(Context context) {
-        PublicKey publicKey = SignatureUtil.getPublicKeyFromBase64OrThrow(
-                "TUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFa0VBdlc5REtQb25TVXJXMzMvZUQvNUFmZHM1R20xTTY1NDhwTkxmNXZpamVib0VkNUhVOGNBMTBiK0tuZ3c0TGJ1a0hqUXFadW9YUFdQNVAvQ0lQNmc9PQ==");
+        PublicKey publicKey = SignatureUtil.getPublicKeyFromBase64OrThrow(Constants.DP3TKey);
         DP3T.init(context, new ApplicationInfo(
-                        "demo.dpppt.org",
+                        Constants.DP3TAppName,
                         Constants.COVID_TRACKER_TRACKING_ENDPOINT,
                         Constants.COVID_TRACKER_TRACKING_ENDPOINT),
-                publicKey);
+                        publicKey);
 
         CertificatePinner certificatePinner = new CertificatePinner.Builder()
-                .add("demo.dpppt.org", "sha256/YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=")
+                .add(Constants.DP3TAppName, Constants.DP3TKeyCheck)
                 .build();
         DP3T.setCertificatePinner(certificatePinner);
     }
@@ -94,7 +96,8 @@ public class CovidTrackerApp extends DaggerApplication {
     private BroadcastReceiver sdkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (DP3T.getStatus(context).getExposureDays().size() > 0 && !PreferencesUtil.isExposedNotificationShown(context)) {
+            if (DP3T.getStatus(context).getExposureDays().size() > 0 &&
+                    !PreferencesUtil.isExposedNotificationShown(context)) {
                 NotificationUtil.showNotification(context, R.string.push_exposed_title,
                         R.string.push_exposed_text, R.drawable.ic_handshakes);
                 PreferencesUtil.setExposedNotificationShown(context);

@@ -32,19 +32,25 @@ public class NotificationUtil {
 
 	@RequiresApi(api = Build.VERSION_CODES.O)
 	public static void createNotificationChannel(Context context) {
-		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager notificationManager = (NotificationManager)
+				context.getSystemService(Context.NOTIFICATION_SERVICE);
 		String channelName = context.getString(R.string.app_name);
 		NotificationChannel channel =
-				new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
+				new NotificationChannel(
+						NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
 		channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
 		notificationManager.createNotificationChannel(channel);
 	}
 
-	public static void showNotification(Context context, @StringRes int title, @StringRes int message, @DrawableRes int icon) {
-		Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+	public static void showNotification(Context context, @StringRes int title,
+										@StringRes int message, @DrawableRes int icon) {
+		Intent launchIntent = context
+				.getPackageManager()
+				.getLaunchIntentForPackage(context.getPackageName());
 		PendingIntent contentIntent = null;
 		if (launchIntent != null) {
-			contentIntent = PendingIntent.getActivity(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			contentIntent = PendingIntent.getActivity(context,
+					0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		}
 		Notification notification =
 				new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
@@ -55,7 +61,8 @@ public class NotificationUtil {
 						.setContentIntent(contentIntent)
 						.build();
 
-		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager notificationManager = (NotificationManager)
+				context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.notify(NOTIFICATION_ID, notification);
 	}
 

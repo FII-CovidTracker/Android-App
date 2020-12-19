@@ -51,11 +51,14 @@ public class ArticleInfoActivity extends DaggerAppCompatActivity {
                 .build();
 
 
+        loadLastArticle();
+        subscribeToArticle();
+    }
+
+    private void loadLastArticle() {
         Bundle b = getIntent().getExtras();
         if(b != null)
             articleViewModel.setArticleId(b.getInt("articleId"));
-
-        subscribeToArticle();
     }
 
     private void subscribeToArticle() {
@@ -78,7 +81,8 @@ public class ArticleInfoActivity extends DaggerAppCompatActivity {
                         }
                         break;
                     case ERROR:
-                        Toast.makeText(this, "Can't connect to our server!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Can't connect to our server!",
+                                Toast.LENGTH_SHORT).show();
                         if (articleResource.getData() == null) {
                             processArticle(ResourceStatus.ERROR);
                         }

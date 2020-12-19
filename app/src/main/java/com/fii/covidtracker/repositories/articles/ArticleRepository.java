@@ -51,14 +51,16 @@ public class ArticleRepository extends Repository {
 
                     articleDao.upsert(articleEntity);
 
-                    Log.i(TAG, "Saved the article with id " + articleId + " into our local database.");
+                    Log.i(TAG, "Saved the article with id " + articleId +
+                            " into our local database.");
                 }
             }
 
             @Override
             protected boolean shouldFetch(Article article) {
                 boolean fetch = ArticleRepository.this.shouldFetch(article);
-                Log.i(TAG, "shouldFetch article " + (article != null ? article.id : "<<new article>>") + ": " + fetch);
+                Log.i(TAG, "shouldFetch article " +
+                        (article != null ? article.id : "<<new article>>") + ": " + fetch);
                 return fetch;
             }
 
@@ -70,13 +72,16 @@ public class ArticleRepository extends Repository {
             @Override
             protected LiveData<ApiResponse<ArticleResponse>> createCall() {
                 LiveData<ApiResponse<ArticleResponse>> call = api.getArticle(articleId);
-                Log.i(TAG, "Called the api for info related to the article with id " + articleId);
+                Log.i(TAG, "Called the api for info related to the article with id " +
+                        articleId);
                 return call;
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<List<Article>>> getArticlesForRegion(String regionName, boolean forceFetch) {
+    public LiveData<Resource<List<Article>>> getArticlesForRegion(
+            String regionName,
+            boolean forceFetch) {
 
         return new NetworkBoundResource<List<Article>, List<ArticleResponse>>(executors) {
             @Override
@@ -113,7 +118,8 @@ public class ArticleRepository extends Repository {
 
             @Override
             protected LiveData<ApiResponse<List<ArticleResponse>>> createCall() {
-                LiveData<ApiResponse<List<ArticleResponse>>> call = api.getArticlesForRegion(regionName);
+                LiveData<ApiResponse<List<ArticleResponse>>> call =
+                        api.getArticlesForRegion(regionName);
                 Log.i(TAG, "Called the api for articles with");
                 return call;
             }
@@ -121,13 +127,13 @@ public class ArticleRepository extends Repository {
     }
 
     public void clearCache() {
-        executors.io().execute(() -> {
-            Log.i(TAG, "clearCache: start");
-            List<ArticleEntity> entities = articleDao.getAllRaw();
-            if(entities != null) {
-                Log.i(TAG, "clearCache: did it");
-                articleDao.delete(entities);
-            }
-        });
+        executors.io().execute(this::deleteAll);
+    }
+
+    private void deleteAll() {
+        List<ArticleEntity> entities = articleDao.getAllRaw();
+        if(entities != null) {
+            articleDao.delete(entities);
+        }
     }
 }

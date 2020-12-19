@@ -21,8 +21,8 @@ import androidx.core.content.ContextCompat;
 public class RequirementsUtil {
 
 	public static boolean isLocationPermissionGranted(Context context) {
-		return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==
-				PackageManager.PERMISSION_GRANTED;
+		return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+				== PackageManager.PERMISSION_GRANTED;
 	}
 
 	public static boolean isBatteryOptimizationDeactivated(Context context) {
@@ -32,10 +32,7 @@ public class RequirementsUtil {
 
 	public static boolean isBluetoothEnabled() {
 		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
-			return false;
-		}
-		return true;
+		return bluetoothAdapter != null && bluetoothAdapter.isEnabled();
 	}
 
 }

@@ -43,14 +43,7 @@ public class MainActivity extends AppCompatActivity {
 		BottomNavigationView navigationView = findViewById(R.id.main_navigation_view);
 		navigationView.inflateMenu(R.menu.menu_navigation_main);
 
-
-		float radius = 64.0f;
-		MaterialShapeDrawable bottomNavigationViewBackground = (MaterialShapeDrawable) navigationView.getBackground();
-		bottomNavigationViewBackground.setShapeAppearanceModel(
-				bottomNavigationViewBackground.getShapeAppearanceModel().toBuilder()
-						.setTopRightCorner(CornerFamily.ROUNDED, radius)
-						.setTopLeftCorner(CornerFamily.ROUNDED, radius)
-						.build());
+		setBottomNavRoundedCorners(navigationView);
 
 		navigationView.setOnNavigationItemSelectedListener(item -> {
 			switch (item.getItemId()) {
@@ -60,14 +53,25 @@ public class MainActivity extends AppCompatActivity {
 							.commit();
 					break;
 				case R.id.action_articles:
-					Log.d(TAG, "setupNavigationView: pula");
 					getSupportFragmentManager().beginTransaction()
-							.replace(R.id.main_fragment_container, ArticleListFragment.newInstance())
+							.replace(R.id.main_fragment_container,
+									ArticleListFragment.newInstance())
 							.commit();
 					break;
 			}
 			return true;
 		});
+	}
+
+	private void setBottomNavRoundedCorners(BottomNavigationView navigationView) {
+		float radius = 64.0f;
+		MaterialShapeDrawable bottomNavigationViewBackground =
+				(MaterialShapeDrawable) navigationView.getBackground();
+		bottomNavigationViewBackground.setShapeAppearanceModel(
+				bottomNavigationViewBackground.getShapeAppearanceModel().toBuilder()
+						.setTopRightCorner(CornerFamily.ROUNDED, radius)
+						.setTopLeftCorner(CornerFamily.ROUNDED, radius)
+						.build());
 	}
 
 }

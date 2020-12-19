@@ -50,14 +50,16 @@ public class RegionRepository extends Repository {
 
                     regionDao.upsert(regionEntity);
 
-                    Log.i(TAG, "Saved the region with id " + regionId + " into our local database.");
+                    Log.i(TAG, "Saved the region with id " +
+                            regionId + " into our local database.");
                 }
             }
 
             @Override
             protected boolean shouldFetch(Region region) {
                 boolean fetch = RegionRepository.this.shouldFetch(region);
-                Log.i(TAG, "shouldFetch region " + (region != null ? region.id : "<<new region>>") + ": " + fetch);
+                Log.i(TAG, "shouldFetch region " +
+                        (region != null ? region.id : "<<new region>>") + ": " + fetch);
                 return fetch;
             }
 
@@ -69,7 +71,8 @@ public class RegionRepository extends Repository {
             @Override
             protected LiveData<ApiResponse<RegionResponse>> createCall() {
                 LiveData<ApiResponse<RegionResponse>> call = api.getRegion(regionId);
-                Log.i(TAG, "Called the api for info related to the region with id " + regionId);
+                Log.i(TAG,
+                        "Called the api for info related to the region with id " + regionId);
                 return call;
             }
         }.asLiveData();

@@ -21,6 +21,7 @@ public interface CovidTrackerArticlesApi {
     LiveData<ApiResponse<List<ArticleResponse>>> getArticles();
 
     @GET("article/getByRegion")
-    LiveData<ApiResponse<List<ArticleResponse>>> getArticlesForRegion(@Query("region")String region);
+    LiveData<ApiResponse<List<ArticleResponse>>> getArticlesForRegion(
+            @Query("region")String region);
 
 }

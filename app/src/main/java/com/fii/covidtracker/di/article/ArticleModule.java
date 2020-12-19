@@ -19,8 +19,10 @@ public abstract class ArticleModule {
 
     @ArticleScope
     @Provides
-    static ArticleRepository providesArticleRepository(CovidTrackerArticlesApi api,
-                                                       ArticleDao articleDao, AppExecutors executors) {
+    static ArticleRepository providesArticleRepository(
+            CovidTrackerArticlesApi api,
+            ArticleDao articleDao,
+            AppExecutors executors) {
         return new ArticleRepository(api, articleDao, executors);
     }
 }

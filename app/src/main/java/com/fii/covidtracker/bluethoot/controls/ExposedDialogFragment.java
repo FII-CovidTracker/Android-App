@@ -37,7 +37,8 @@ import java.util.Date;
 public class ExposedDialogFragment extends DialogFragment {
 
 	public static final String RESULT_EXTRA_DATE_MILLIS = "result_extra_date_millis";
-	public static final String RESULT_EXTRA_AUTH_CODE_INPUT_BASE64 = "result_extra_auth_code_input_base64";
+	public static final String RESULT_EXTRA_AUTH_CODE_INPUT_BASE64 =
+			"result_extra_auth_code_input_base64";
 
 	private static final String ARG_MIN_DATE = "arg_min_date";
 	private static final String ARG_CODE_REGEX = "arg_code_regex";
@@ -85,9 +86,11 @@ public class ExposedDialogFragment extends DialogFragment {
 		dateView.setHint(DATE_FORMAT.format(new Date()));
 		dateView.setOnClickListener(v -> {
 			DialogFragment newFragment = DatePickerFragmentDialog
-					.newInstance(minDate, selectedDate > 0 ? selectedDate : Calendar.getInstance().getTimeInMillis());
+					.newInstance(minDate, selectedDate > 0 ? selectedDate :
+							Calendar.getInstance().getTimeInMillis());
 			newFragment.setTargetFragment(this, REQUEST_CODE_DATE_PICKER);
-			newFragment.show(getParentFragmentManager(), DatePickerFragmentDialog.class.getCanonicalName());
+			newFragment.show(getParentFragmentManager(),
+					DatePickerFragmentDialog.class.getCanonicalName());
 		});
 		codeInputView = view.findViewById(R.id.input_dialog_input);
 		errorView = view.findViewById(R.id.input_dialog_error_text);
@@ -105,13 +108,15 @@ public class ExposedDialogFragment extends DialogFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		if (requestCode == REQUEST_CODE_DATE_PICKER && resultCode == Activity.RESULT_OK) {
-			selectedDate = data.getLongExtra(DatePickerFragmentDialog.RESULT_EXTRA_DATE_MILLIS, -1);
+			selectedDate = data.getLongExtra(
+					DatePickerFragmentDialog.RESULT_EXTRA_DATE_MILLIS, -1);
 			dateView.setText(DATE_FORMAT.format(new Date(selectedDate)));
 		}
 	}
 
 	private void checkAndDismissDialog(long selectedDate, String codeInput) {
-		boolean dateValid = selectedDate > minDate && selectedDate <= Calendar.getInstance().getTimeInMillis();
+		boolean dateValid = selectedDate > minDate && selectedDate
+				<= Calendar.getInstance().getTimeInMillis();
 		if (!dateValid) {
 			errorView.setText(R.string.dialog_input_date_error);
 			errorView.setVisibility(View.VISIBLE);
@@ -126,15 +131,17 @@ public class ExposedDialogFragment extends DialogFragment {
 
 		Intent result = new Intent();
 		result.putExtra(RESULT_EXTRA_DATE_MILLIS, selectedDate);
-		String inputBase64 = new String(Base64.encode(codeInput.getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP),
-				StandardCharsets.UTF_8);
+		String inputBase64 =
+				new String(Base64.encode(codeInput.getBytes(StandardCharsets.UTF_8),
+						Base64.NO_WRAP), StandardCharsets.UTF_8);
 		result.putExtra(RESULT_EXTRA_AUTH_CODE_INPUT_BASE64, inputBase64);
 		getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, result);
 		dismiss();
 	}
 
 	private void dismissDialog() {
-		getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, null);
+		getTargetFragment().onActivityResult(getTargetRequestCode(),
+				Activity.RESULT_CANCELED, null);
 		dismiss();
 	}
 

@@ -14,5 +14,6 @@ public abstract class ViewModelFactoryModule {
 
     @Singleton
     @Binds
-    public abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelProviderFactory viewModelProviderFactory);
+    public abstract ViewModelProvider.Factory bindViewModelFactory(
+            ViewModelProviderFactory viewModelProviderFactory);
 }

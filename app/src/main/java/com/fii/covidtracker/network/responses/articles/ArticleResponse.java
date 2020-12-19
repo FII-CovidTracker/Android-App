@@ -30,7 +30,13 @@ public class ArticleResponse {
     @Expose
     public Date publishDate;
 
-    public ArticleResponse(int id, int authorityId, String author, String title, String markdownContent, Date publishDate) {
+    public ArticleResponse(
+            int id,
+            int authorityId,
+            String author,
+            String title,
+            String markdownContent,
+            Date publishDate) {
         this.id = id;
         this.authorityId = authorityId;
         this.author = author;
