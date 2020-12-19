@@ -2,26 +2,33 @@ package com.fii.covidtracker.ui.article;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.fii.covidtracker.R;
-import com.fii.covidtracker.bluethoot.controls.ControlsFragment;
 import com.fii.covidtracker.network.ResourceStatus;
 import com.fii.covidtracker.repositories.models.articles.Article;
+import com.fii.covidtracker.repositories.models.regions.Region;
 import com.fii.covidtracker.ui.MainListItemAdapter;
 import com.fii.covidtracker.viewmodels.ViewModelProviderFactory;
 import com.fii.covidtracker.viewmodels.article.ArticleViewModel;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -34,6 +41,8 @@ public class ArticleListFragment extends DaggerFragment {
     ViewModelProviderFactory providerFactory;
 
     private ArticleViewModel articleViewModel;
+
+    private SharedPreferences prefs;
 
     private RecyclerView articlesRecyclerView;
     private MainListItemAdapter<Article> articleAdapter;
@@ -70,13 +79,17 @@ public class ArticleListFragment extends DaggerFragment {
             }
         });
 
+        prefs = getActivity().getSharedPreferences(
+                "com.fii.covidtracker.app", Context.MODE_PRIVATE);
+
         subscribeToArticles(false);
     }
 
-
     private void subscribeToArticles(boolean forceFetch) {
-        articleViewModel.getArticlesResource(forceFetch).removeObservers(getActivity());
-        articleViewModel.getArticlesResource(forceFetch).observe(getActivity(), articlesResource -> {
+        String regionName = prefs.getString("regionName", "global");
+
+        articleViewModel.getArticlesResourceForRegion(regionName, forceFetch).removeObservers(getActivity());
+        articleViewModel.getArticlesResourceForRegion(regionName, forceFetch).observe(getActivity(), articlesResource -> {
             if (articlesResource != null) {
                 switch (articlesResource.getStatus()) {
                     case LOADING:

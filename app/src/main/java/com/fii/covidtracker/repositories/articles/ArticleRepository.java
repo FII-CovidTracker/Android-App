@@ -76,7 +76,7 @@ public class ArticleRepository extends Repository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<List<Article>>> getArticles(boolean forceFetch) {
+    public LiveData<Resource<List<Article>>> getArticlesForRegion(String regionName, boolean forceFetch) {
 
         return new NetworkBoundResource<List<Article>, List<ArticleResponse>>(executors) {
             @Override
@@ -113,10 +113,21 @@ public class ArticleRepository extends Repository {
 
             @Override
             protected LiveData<ApiResponse<List<ArticleResponse>>> createCall() {
-                LiveData<ApiResponse<List<ArticleResponse>>> call = api.getArticles();
+                LiveData<ApiResponse<List<ArticleResponse>>> call = api.getArticlesForRegion(regionName);
                 Log.i(TAG, "Called the api for articles with");
                 return call;
             }
         }.asLiveData();
+    }
+
+    public void clearCache() {
+        executors.io().execute(() -> {
+            Log.i(TAG, "clearCache: start");
+            List<ArticleEntity> entities = articleDao.getAllRaw();
+            if(entities != null) {
+                Log.i(TAG, "clearCache: did it");
+                articleDao.delete(entities);
+            }
+        });
     }
 }

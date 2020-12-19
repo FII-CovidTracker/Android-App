@@ -46,6 +46,7 @@ import com.fii.covidtracker.bluethoot.util.RequirementsUtil;
 import com.fii.covidtracker.network.ResourceStatus;
 import com.fii.covidtracker.repositories.models.regions.Region;
 import com.fii.covidtracker.viewmodels.ViewModelProviderFactory;
+import com.fii.covidtracker.viewmodels.article.ArticleViewModel;
 import com.fii.covidtracker.viewmodels.region.RegionViewModel;
 
 import org.dpppt.android.sdk.DP3T;
@@ -74,6 +75,7 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 	ViewModelProviderFactory providerFactory;
 
 	private RegionViewModel regionViewModel;
+	private ArticleViewModel articleViewModel;
 	private List<Region> regions;
 
 	private SharedPreferences prefs;
@@ -113,6 +115,8 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 
 		regionViewModel = new ViewModelProvider((ViewModelStoreOwner) this, providerFactory)
 				.get(RegionViewModel.class);
+		articleViewModel = new ViewModelProvider((ViewModelStoreOwner) this, providerFactory)
+				.get(ArticleViewModel.class);
 	}
 
 	@Nullable
@@ -170,10 +174,10 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 		ArrayAdapter<Region> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, this.regions);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
-		int regionId = prefs.getInt("regionId", 0);
-		Log.d(TAG, "processRegionList: " + regionId);
+		String regionName = prefs.getString("regionName", "global");
+		Log.d(TAG, "processRegionList: " + regionName);
 		Optional<Region> region = regions.stream()
-				.filter(r -> r.id == regionId)
+				.filter(r -> r.name.equals(regionName))
 				.findFirst();
 		Log.d(TAG, "processRegionList: " + region);
 		if(region.isPresent()){
@@ -183,6 +187,7 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 		else{
 			spinner.setSelection(0);
 		}
+
 		spinner.setOnItemSelectedListener(this);
 	}
 
@@ -413,8 +418,9 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		prefs.edit().putInt("regionId", regions.get(position).id).apply();
-		Log.d(TAG, "onItemSelected: " + regions.get(position).id);
+		prefs.edit().putString("regionName", regions.get(position).name).apply();
+		articleViewModel.clearCache();
+		Log.d(TAG, "onItemSelected: " + regions.get(position).name);
 	}
 
 	@Override

@@ -41,10 +41,14 @@ public class ArticleViewModel extends ViewModel {
         return articleResource;
     }
 
-    public LiveData<Resource<List<Article>>> getArticlesResource(boolean forceFetch) {
+    public LiveData<Resource<List<Article>>> getArticlesResourceForRegion(String regionName, boolean forceFetch) {
         if (articlesResource == null){
-            this.articlesResource = articleRepository.getArticles(forceFetch);
+            this.articlesResource = articleRepository.getArticlesForRegion(regionName, forceFetch);
         }
         return articlesResource;
+    }
+
+    public void clearCache() {
+        articleRepository.clearCache();
     }
 }

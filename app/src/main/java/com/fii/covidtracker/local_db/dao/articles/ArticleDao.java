@@ -21,4 +21,8 @@ public abstract class ArticleDao extends BaseDao<ArticleEntity> {
     @Transaction
     @Query("SELECT * FROM articles ORDER By publishDate")
     public abstract LiveData<List<ArticleEntity>> getAll();
+
+    @Transaction
+    @Query("SELECT * FROM articles ORDER By publishDate")
+    public abstract List<ArticleEntity> getAllRaw();
 }
