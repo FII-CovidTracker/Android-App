@@ -26,7 +26,8 @@ public class ViewModelProviderFactory implements ViewModelProvider.Factory {
         if (creator == null) {
 
             // loop through the allowed classes with the @ViewModelKey
-            for (Map.Entry<Class<? extends ViewModel>, Provider<ViewModel>> entry : creators.entrySet()) {
+            for (Map.Entry<Class<? extends ViewModel>,
+                    Provider<ViewModel>> entry : creators.entrySet()) {
 
                 // if it's allowed, set the Provider<ViewModel>
                 if (modelClass.isAssignableFrom(entry.getKey())) {

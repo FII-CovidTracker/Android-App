@@ -138,8 +138,10 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 	}
 
 	private void subscribeToRegions(boolean forceFetch) {
-		regionViewModel.getRegionsResource(forceFetch).removeObservers((LifecycleOwner) getActivity());
-		regionViewModel.getRegionsResource(forceFetch).observe((LifecycleOwner) getActivity(), regionsResource -> {
+		regionViewModel.getRegionsResource(forceFetch).removeObservers(
+				(LifecycleOwner) getActivity());
+		regionViewModel.getRegionsResource(forceFetch).observe((LifecycleOwner) getActivity(),
+				regionsResource -> {
 			if (regionsResource != null) {
 				switch (regionsResource.getStatus()) {
 					case LOADING:
@@ -157,7 +159,8 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 						}
 						break;
 					case ERROR:
-						Toast.makeText(getContext(), "Can't connect to our server!", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getContext(),
+								"Can't connect to our server!", Toast.LENGTH_SHORT).show();
 						if (regionsResource.getData() == null) {
 							processRegionList(ResourceStatus.ERROR);
 						}
@@ -171,7 +174,8 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 		this.regions = regions;
 		Spinner spinner = (Spinner) getActivity().findViewById(R.id.home_region_spinner);
 
-		ArrayAdapter<Region> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, this.regions);
+		ArrayAdapter<Region> adapter = new ArrayAdapter<>(getActivity(),
+				android.R.layout.simple_spinner_item, this.regions);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		String regionName = prefs.getString("regionName", "global");
@@ -199,7 +203,8 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 	@Override
 	public void onResume() {
 		super.onResume();
-		getContext().registerReceiver(bluetoothReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+		getContext().registerReceiver(bluetoothReceiver,
+				new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 		getContext().registerReceiver(sdkReceiver, DP3T.getUpdateIntentFilter());
 		checkPermissionRequirements();
 		updateSdkStatus();
@@ -216,8 +221,10 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		if (requestCode == REQUEST_CODE_REPORT_EXPOSED) {
 			if (resultCode == Activity.RESULT_OK) {
-				long onsetDate = data.getLongExtra(ExposedDialogFragment.RESULT_EXTRA_DATE_MILLIS, -1);
-				String authCodeBase64 = data.getStringExtra(ExposedDialogFragment.RESULT_EXTRA_AUTH_CODE_INPUT_BASE64);
+				long onsetDate = data.getLongExtra(
+						ExposedDialogFragment.RESULT_EXTRA_DATE_MILLIS, -1);
+				String authCodeBase64 = data.getStringExtra(
+						ExposedDialogFragment.RESULT_EXTRA_AUTH_CODE_INPUT_BASE64);
 				sendInfectedUpdate(getContext(), new Date(onsetDate), authCodeBase64);
 			}
 		}
@@ -239,7 +246,8 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 			if (BluetoothAdapter.getDefaultAdapter() != null) {
 				BluetoothAdapter.getDefaultAdapter().enable();
 			} else {
-				Toast.makeText(getContext(), "No BluetoothAdapter found!", Toast.LENGTH_LONG).show();
+				Toast.makeText(getContext(),
+						"No BluetoothAdapter found!", Toast.LENGTH_LONG).show();
 			}
 		});
 
@@ -251,14 +259,17 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 			DialogUtil.showConfirmDialog(v.getContext(), R.string.dialog_clear_data_title,
 					(dialog, which) -> {
 						DP3T.clearData(v.getContext(), () ->
-								new Handler(getContext().getMainLooper()).post(this::updateSdkStatus));
+								new Handler(getContext().getMainLooper())
+										.post(this::updateSdkStatus));
 						CovidTrackerApp.initDP3T(v.getContext());
 					});
 		});
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode,
+										   @NonNull String[] permissions,
+										   @NonNull int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		if (requestCode == REQUEST_CODE_PERMISSION_LOCATION) {
 			checkPermissionRequirements();
@@ -328,9 +339,11 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 					Calendar minCal = Calendar.getInstance();
 					minCal.add(Calendar.DAY_OF_YEAR, EXPOSED_MIN_DATE_DIFF);
 					DialogFragment exposedDialog =
-							ExposedDialogFragment.newInstance(minCal.getTimeInMillis(), REGEX_VALIDITY_AUTH_CODE);
+							ExposedDialogFragment.newInstance(minCal.getTimeInMillis(),
+									REGEX_VALIDITY_AUTH_CODE);
 					exposedDialog.setTargetFragment(this, REQUEST_CODE_REPORT_EXPOSED);
-					exposedDialog.show(getParentFragmentManager(), ExposedDialogFragment.class.getCanonicalName());
+					exposedDialog.show(getParentFragmentManager(),
+							ExposedDialogFragment.class.getCanonicalName());
 				});
 	}
 
@@ -389,7 +402,8 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 	private void sendInfectedUpdate(Context context, Date onsetDate, String codeInputBase64) {
 		setExposeLoadingViewVisible(true);
 
-		DP3T.sendIAmInfected(context, onsetDate, new ExposeeAuthMethodJson(codeInputBase64), new ResponseCallback<Void>() {
+		DP3T.sendIAmInfected(context, onsetDate, new ExposeeAuthMethodJson(codeInputBase64),
+				new ResponseCallback<Void>() {
 			@Override
 			public void onSuccess(Void response) {
 				DialogUtil.showMessageDialog(context, getString(R.string.dialog_title_success),
@@ -411,8 +425,10 @@ public class ControlsFragment extends DaggerFragment implements AdapterView.OnIt
 	private void setExposeLoadingViewVisible(boolean visible) {
 		View view = getView();
 		if (view != null) {
-			view.findViewById(R.id.home_loading_view_exposed).setVisibility(visible ? View.VISIBLE : View.GONE);
-			view.findViewById(R.id.home_button_report_infected).setVisibility(visible ? View.INVISIBLE : View.VISIBLE);
+			view.findViewById(R.id.home_loading_view_exposed)
+					.setVisibility(visible ? View.VISIBLE : View.GONE);
+			view.findViewById(R.id.home_button_report_infected)
+					.setVisibility(visible ? View.INVISIBLE : View.VISIBLE);
 		}
 	}
 

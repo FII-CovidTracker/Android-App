@@ -41,7 +41,9 @@ public class ArticleViewModel extends ViewModel {
         return articleResource;
     }
 
-    public LiveData<Resource<List<Article>>> getArticlesResourceForRegion(String regionName, boolean forceFetch) {
+    public LiveData<Resource<List<Article>>> getArticlesResourceForRegion(
+            String regionName,
+            boolean forceFetch) {
         if (articlesResource == null){
             this.articlesResource = articleRepository.getArticlesForRegion(regionName, forceFetch);
         }

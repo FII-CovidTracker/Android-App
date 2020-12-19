@@ -40,7 +40,8 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<ApiRespon
                 if (started.compareAndSet(false, true)) {
                     call.enqueue(new Callback<R>() {
                         @Override
-                        public void onResponse(@NonNull Call<R> call, @NonNull Response<R> response) {
+                        public void onResponse(@NonNull Call<R> call,
+                                               @NonNull Response<R> response) {
                             postValue(new ApiResponse<>(response));
                         }
 
@@ -69,17 +70,24 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<ApiRespon
 
         @Nullable
         @Override
-        public CallAdapter<?, ?> get(@NonNull Type returnType, @NonNull Annotation[] annotations, @NonNull Retrofit retrofit) {
+        public CallAdapter<?, ?> get(
+                @NonNull Type returnType,
+                @NonNull Annotation[] annotations,
+                @NonNull Retrofit retrofit) {
             if (getRawType(returnType) != LiveData.class) {
                 return null;
             }
             Type observableType = getParameterUpperBound(0, (ParameterizedType) returnType);
             Class<?> rawObservableType = getRawType(observableType);
             if (rawObservableType != ApiResponse.class) {
-                throw new IllegalArgumentException("The admitted structure for retrofit return values is LiveData<ApiResource<T>>");
+                throw new IllegalArgumentException(
+                        "The admitted structure for retrofit return values is " +
+                                "LiveData<ApiResource<T>>");
             }
             if (!(observableType instanceof ParameterizedType)) {
-                throw new IllegalArgumentException("The admitted structure for retrofit return values is LiveData<ApiResource<T>>");
+                throw new IllegalArgumentException(
+                        "The admitted structure for retrofit return values is " +
+                                "LiveData<ApiResource<T>>");
             }
             Type bodyType = getParameterUpperBound(0, (ParameterizedType) observableType);
             return new LiveDataCallAdapter<>(bodyType);

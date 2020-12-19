@@ -15,7 +15,12 @@ public class RegionEntity extends BaseEntity {
 
     public String name;
 
-    public RegionEntity(int id, String name, boolean global, long createdAt, long modifiedAt) {
+    public RegionEntity(
+            int id,
+            String name,
+            boolean global,
+            long createdAt,
+            long modifiedAt) {
         this.id = id;
         this.name = name;
         this.global = global;

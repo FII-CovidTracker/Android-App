@@ -26,8 +26,15 @@ public class ArticleEntity extends BaseEntity {
 
     public Date publishDate;
 
-    public ArticleEntity(int id, int authorityId, String author, String title,
-                         String markdownContent, Date publishDate, long createdAt, long modifiedAt) {
+    public ArticleEntity(
+            int id,
+            int authorityId,
+            String author,
+            String title,
+            String markdownContent,
+            Date publishDate,
+            long createdAt,
+            long modifiedAt) {
         this.id = id;
         this.authorityId = authorityId;
         this.author = author;

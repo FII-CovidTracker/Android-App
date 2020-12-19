@@ -15,7 +15,8 @@ import com.fii.covidtracker.repositories.models.MainListItem;
 
 import org.apache.commons.text.WordUtils;
 
-public class MainListItemAdapter<T extends MainListItem> extends ListAdapter<T, MainListItemAdapter.ViewHolder> {
+public class MainListItemAdapter<T extends MainListItem>
+        extends ListAdapter<T, MainListItemAdapter.ViewHolder> {
 
     private OnClickListeners onClickListeners;
 
@@ -41,8 +42,11 @@ public class MainListItemAdapter<T extends MainListItem> extends ListAdapter<T, 
 
     @NonNull
     @Override
-    public MainListItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_list_item, parent, false);
+    public MainListItemAdapter.ViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent,
+            int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.main_list_item, parent, false);
 
         return new MainListItemAdapter.ViewHolder(view, onClickListeners);
     }
