@@ -1,11 +1,12 @@
 # Android-App
 The Android Application
-## Lab4:
 - Dagger 2 setup for dependency injection
 - Retrofit setup done for making HTTP calls
 - MVVM stack with caching done for articles
 - Added article list screen
 - Added article info screen
+- Added bluetooth tracker screen and all bluetooth tracker functionalities
+Demo: https://www.youtube.com/watch?v=hweAK7YE63s&feature=youtu.be
 
 | bluetooth tracker screen | list screen | info screen |
 |--------------------------|-------------|-------------|
