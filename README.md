@@ -6,6 +6,7 @@ The Android Application
 - Added article list screen
 - Added article info screen
 - Added bluetooth tracker screen and all bluetooth tracker functionalities
+
 Demo: https://www.youtube.com/watch?v=hweAK7YE63s&feature=youtu.be
 The demo doesn't have the final ui added yet. For the final ui look at the table below (the functionalities are exactly the same):
 
